@@ -1,18 +1,38 @@
 package com.APSProject.entities;
-import com.APSProject.components.Health;
-import com.APSProject.components.Position;
-import com.APSProject.components.Velocity;
-import com.APSProject.components.Health;
+import com.APSProject.components.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 
-public class Player {
+public class Player extends ActorEntity{
 
-    public Velocity velocity;
-    public Health health;
-    public Position position;
-
-    public Player (Position position, Velocity velocity, Health health) {
-        this.position = position;
-        this.velocity = velocity;
-        this.health = health;
+    public Player(
+        long id,
+        Position position,
+        Sprite path,
+        Velocity velocity,
+        Health health
+    ){
+        super(
+            id,
+            position,
+            path,
+            velocity,
+            health
+        );
+    }
+    @Override
+    public void Update(float deltaTime){
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            this.position.y += this.velocity.vy*deltaTime;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            this.position.y -= this.velocity.vy*deltaTime;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            this.position.x -= this.velocity.vx*deltaTime;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            this.position.x += this.velocity.vx*deltaTime;
+        }
     }
 }
