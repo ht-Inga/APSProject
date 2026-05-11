@@ -19,14 +19,16 @@ public class EntityFactory {
     public Enemy CreateEnemy (
         Position position,
         Velocity velocity,
-        Health health
+        Health health,
+        Player player
     )   {
         return new Enemy(
             0,
             position,
             new Sprite("sprites/malvadeza.png"),
             velocity,
-            health
+            health,
+            player
         );
     }
 }

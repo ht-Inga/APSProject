@@ -7,10 +7,11 @@ import java.util.List;
 
 public class EntityManager {
     private List<Entity> entities = new ArrayList<>();
-        public void AddEntity(
+        public Entity AddEntity(
         Entity entity
     ) {
         entities.add(entity);
+        return entity;
     }
     public void Update(float deltatime){
             for(
@@ -25,5 +26,8 @@ public class EntityManager {
         ){
             entity.Draw(batch);
         }
+    }
+    public int getSize(){
+            return entities.size();
     }
 }

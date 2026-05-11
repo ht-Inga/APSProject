@@ -17,6 +17,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.security.Key;
+import java.util.Random;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
@@ -26,6 +27,7 @@ public class Main extends ApplicationAdapter {
     private OrthographicCamera camera;
     private Texture heart;
     private Texture emptyheart;
+    private Player player;
 
     @Override
     public void create() {
@@ -35,15 +37,21 @@ public class Main extends ApplicationAdapter {
         heart = new Texture("sprites/ht.png");
         emptyheart = new Texture("sprites/emptyht.png");
         camera = new OrthographicCamera(1280, 720);
-        entityManager.AddEntity(entityFactory.CreatePlayer(new Position(0, 0), new Velocity(15, 15), new Health(5, 5)));
-        entityManager.AddEntity(entityFactory.CreateEnemy(new Position(0, 0), new Velocity(15, 15), new Health(3, 3)));
+        player = (Player)entityManager.AddEntity(entityFactory.CreatePlayer(new Position(0, 0), new Velocity(15, 15), new Health(5, 5)));
+        //entityManager.AddEntity(entityFactory.CreateEnemy(new Position(0, 0), new Velocity(10, 10), new Health(3, 3), player));
     }
 
     @Override
     public void render() {
         float deltaTime = Gdx.graphics.getDeltaTime();
         entityManager.Update(deltaTime);
-        //camera.position.set(new Vector2(player.position.x+8, player.position.y+8),0);
+            if(entityManager.getSize()<20) {
+                int chance = MathUtils.random(1000);
+                if (chance < 1) {
+                    entityManager.AddEntity(entityFactory.CreateEnemy(new Position(0, 0), new Velocity(10, 10), new Health(3, 3), player));
+                }
+            }
+        camera.position.set(new Vector2(player.position.x+8, player.position.y+8),0);
         if (Gdx.input.isKeyPressed(Input.Keys.MINUS)) {
             camera.zoom += 0.1f;
         }
@@ -58,8 +66,6 @@ public class Main extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         entityManager.Draw(batch);
-        //for (int i = 0; i < player.health.hp/10; i++) {batch.draw(heart, player.position.x-10.5f+i*3.5f, player.position.y+16, 5,5);}
-        //for (int i = player.health.hp/10; i < 10; i++) {batch.draw(emptyheart, player.position.x-10.5f+i*3.5f, player.position.y+16, 5,5);}
         batch.end();
     }
 
